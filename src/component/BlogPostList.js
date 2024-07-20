@@ -1,10 +1,19 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { styled } from '@mui/system';
 
 import { Box, Button, Grid, Typography,Pagination ,CardActionArea,CardContent,Card,CardMedia} from '@mui/material';
 
 const BlogPostList = () => {
+  const StyledCardMedia = styled(CardMedia)({
+    height: '100%',
+  });
+  const StyledCard = styled(Card)({
+    position: 'relative',
+    width: 345,
+    height: 370,
+  });
     const [loader, setLoader] = useState(true);
     const [Posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +26,7 @@ const BlogPostList = () => {
   const currentPosts = Posts.slice(indexOfFirstPost, indexOfLastPost);
 
     const fetchdata = () => {
-        axios.get('https://newsapi.org/v2/everything?q=tesla&from=2024-06-19&sortBy=publishedAt&apiKey=a84b647866634dfb9cdcb5ec1126bdd3')
+        axios.get('https://newsapi.org/v2/everything?q=tesla&from=2024-06-20&sortBy=publishedAt&apiKey=a84b647866634dfb9cdcb5ec1126bdd3')
             .then(res => {
                 console.log(res.data)
                 setPosts(res.data.articles)
@@ -31,14 +40,8 @@ const BlogPostList = () => {
       }, [currentPage]);
 
     return (
-        <>
-           <div style={{width:'1800px',height:'100px',backgroundColor:'black'}}>
-           <Typography variant='h6' sx={{color:'white'}}>home</Typography>
-           <Typography></Typography>
-           <span>|</span>
-           <Typography variant='h6' sx={{color:'white'}}>Blog</Typography>
-           <Typography></Typography>
-           </div>
+        <Box sx={{backgroundColor:'#21618C '}}>
+          
                 <Typography variant='h3'>Blog Posts</Typography>
             <Button onClick={fetchdata}>Fetch Posts</Button>
             {
@@ -48,19 +51,20 @@ const BlogPostList = () => {
                     currentPosts.map((item,index) => {
                         return (
                             <Grid  key={index} md={4} padding={1}>
-                                 <Card sx={{ width:'70%',height:'100%' ,borderRadius:'10px', boxShadow:'3px 3px 3px 3px lightblue',padding:'3px',marginTop:'3px'}}>
-       <Typography  sx={{fontSize:'20px',fontWeight:'bold', color:'DeepSkyBlue'}} >
-            {item.title}
-          </Typography>
+                                 <StyledCard >
+      
       <CardActionArea>
-      <CardMedia
+      <StyledCardMedia
         component="img"
-                                            sx={{ height:140 ,width:'100%'}}
+                                         
                                             image={item.urlToImage}
                                           />
+                                           <Typography  sx={{fontSize:'20px',fontWeight:"Medium", color:"black"}} >
+            {item.title}
+          </Typography>
         <CardContent>
          
-          <Typography variant="h6" color="blue">
+          <Typography sx={{marginLeft:'45%'}} color="blue">
            {item.publishedAt}
           </Typography>
         </CardContent>
@@ -73,7 +77,7 @@ const BlogPostList = () => {
   Read More
 </Button>
       </CardActionArea>
-    </Card>
+    </StyledCard>
                                 
                             </Grid>) })}
 
@@ -89,7 +93,7 @@ const BlogPostList = () => {
               color="primary"
             />
           </Box>
-        </>
+        </Box>
 
     )
 
